@@ -1,0 +1,82 @@
+@font-face {
+  font-family: 'DungGeunMo';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/DungGeunMo.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --primary-bg: #ffffff; /* Soft warm white */
+  --accent-color: #b3ace5; /* Soft Lavender */
+  --text-color: #4a4458; /* Dark muted purple-gray */
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --pixel-font: 'Press Start 2P', system-ui; /* Fallback to system ui if font not loaded */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden; /* Prevent scroll for the rain effect */
+}
+
+#root {
+  width: 100%;
+  max-width: 430px; /* iPhone 14/15 width */
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  background: var(--primary-bg);
+}
+
+h1 {
+  font-family: var(--pixel-font);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  background: var(--accent-color);
+  color: white;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.2s;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Animations */
+@keyframes fall {
+  0% {
+    transform: translateY(-110px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+.falling-poop {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  z-index: 1;
+  pointer-events: auto; /* Allow clicking to trigger navigation */
+  cursor: pointer;
+  animation: fall linear infinite;
+}

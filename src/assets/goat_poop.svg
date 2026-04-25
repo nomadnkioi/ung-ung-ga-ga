@@ -1,0 +1,9 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <rect width="48" height="48" fill="white" />
+  <!-- Bead 1 - Top Leftish -->
+  <rect x="10" y="15" width="10" height="10" fill="#5D4037" stroke="#3E2723" stroke-width="2" />
+  <!-- Bead 2 - Top Rightish -->
+  <rect x="26" y="12" width="10" height="10" fill="#5D4037" stroke="#3E2723" stroke-width="2" />
+  <!-- Bead 3 - Bottom Center -->
+  <rect x="18" y="26" width="10" height="10" fill="#5D4037" stroke="#3E2723" stroke-width="2" />
+</svg>
