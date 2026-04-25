@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import healthy from '../assets/healthy_poop.png';
-import goat from '../assets/goat_poop.png';
+import goat from '../assets/goat_poop.svg';
 import soft from '../assets/soft_poop.png';
 import diarrhea from '../assets/diarrhea_poop.png';
 import painful from '../assets/painful_poop.png';
