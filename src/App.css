@@ -1,6 +1,5 @@
 /* Global & Component Styles for UngUngGaGa */
 
-/* App Container */
 .app-container {
   height: 100dvh; /* Dynamic viewport height for mobile */
   position: relative;
@@ -8,8 +7,6 @@
   background-color: var(--primary-bg);
   max-width: 500px; /* Force phone width on desktop */
   margin: 0 auto;
-  border-left: var(--border-thick);
-  border-right: var(--border-thick);
   box-shadow: 0 0 40px rgba(0,0,0,0.1); 
 }
 
@@ -66,6 +63,22 @@ header {
 .nav-btn.home:active {
   background: #eee;
   transform: scale(0.98);
+}
+
+.nav-btn.flat {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 6px 4px;
+  transform: none;
+  font-size: 0.95rem;
+  color: #666; /* 튀지 않게 회색빛으로 처리 */
+}
+
+.nav-btn.flat:active {
+  background: transparent;
+  transform: scale(0.95);
+  color: var(--text-color);
 }
 
 .nav-btn.accent {

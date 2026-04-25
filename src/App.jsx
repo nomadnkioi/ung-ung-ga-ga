@@ -111,6 +111,18 @@ const App = () => {
     setView('record');
   };
 
+  // 3. 모바일 상태표시줄 색상 동기화 (iOS 대응)
+  useEffect(() => {
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      if (view === 'home' || view === 'landing') {
+        metaThemeColor.setAttribute('content', '#ffffff'); // 첫 화면: 순백색
+      } else {
+        metaThemeColor.setAttribute('content', '#fffbf0'); // 내부 화면: 웜톤 레트로 화이트
+      }
+    }
+  }, [view]);
+
   //Emergency Alarm Simulation
   useEffect(() => {
     if (view === 'calendar' && !loading && records.length === 0) {
@@ -201,9 +213,9 @@ const App = () => {
       {view === 'dayDetail' && (
         <div className="view-container">
           <header>
-            <button className="nav-btn home" onClick={() => setView('calendar')}>돌아가기</button>
+            <button className="nav-btn flat" onClick={() => setView('calendar')}>뒤로</button>
             <h1 style={{fontSize: '1.8rem', margin: '0', cursor: 'default'}}>💩</h1>
-            <div style={{width: '64px'}}></div>
+            <div style={{width: '40px'}}></div>
           </header>
           <DayDetailView 
             date={selectedDate} 
@@ -219,9 +231,9 @@ const App = () => {
       {view === 'record' && (
         <div className="view-container">
           <header>
-            <button className="nav-btn home" onClick={() => { setEditingRecord(null); setView('dayDetail'); }}>취소</button>
+            <button className="nav-btn flat" onClick={() => { setEditingRecord(null); setView('dayDetail'); }}>취소</button>
             <h1 style={{fontSize: '1.8rem', margin: '0', cursor: 'default'}}>💩</h1>
-            <div style={{width: '64px'}}></div>
+            <div style={{width: '40px'}}></div>
           </header>
           <RecordForm 
             date={selectedDate} 
