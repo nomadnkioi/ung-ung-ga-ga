@@ -30,11 +30,11 @@ const CalendarView = ({ records, onDateSelect, currentMonth = new Date(), onPrev
   return (
     <div className="calendar-grid">
       <div className="calendar-nav" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-        <span onClick={onPrevMonth} style={{ fontSize: '1.2rem', color: 'var(--text-color)', cursor: 'pointer', padding: '5px', userSelect: 'none', fontFamily: "'DungGeunMo', sans-serif", fontWeight: 'bold' }}>{'<'}</span>
+        <span onClick={onPrevMonth} style={{ fontSize: '1.2rem', color: 'var(--text-color)', cursor: 'pointer', padding: '5px', userSelect: 'none', fontFamily: "'DungGeunMo', sans-serif", fontWeight: 'bold', WebkitTextStroke: '1.5px var(--text-color)' }}>{'<'}</span>
         <div style={{ display: 'flex', alignItems: 'center', background: '#e1f5fe', padding: '2px 8px', borderRadius: '8px', border: 'var(--border-thick)', boxShadow: '3px 3px 0px var(--text-color)' }}>
           <h2 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-color)', fontFamily: "'DungGeunMo', sans-serif", fontWeight: '700', whiteSpace: 'nowrap' }}>{year}년 {month + 1}월</h2>
         </div>
-        <span onClick={onNextMonth} style={{ fontSize: '1.2rem', color: 'var(--text-color)', cursor: 'pointer', padding: '5px', userSelect: 'none', fontFamily: "'DungGeunMo', sans-serif", fontWeight: 'bold' }}>{'>'}</span>
+        <span onClick={onNextMonth} style={{ fontSize: '1.2rem', color: 'var(--text-color)', cursor: 'pointer', padding: '5px', userSelect: 'none', fontFamily: "'DungGeunMo', sans-serif", fontWeight: 'bold', WebkitTextStroke: '1.5px var(--text-color)' }}>{'>'}</span>
       </div>
       <div className="calendar-header">
         {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
