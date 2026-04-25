@@ -308,40 +308,69 @@ header {
 
 
 /* FallingPoop Home */
-.home-screen {
-  height: 100vh;
-  background-color: var(--primary-bg);
-  cursor: pointer;
-  overflow: hidden;
-  position: relative;
+
+/* === Simple Landing Screen === */
+.landing-screen {
+  height: 100dvh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: #ffffff;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-.main-title {
-  font-family: var(--pixel-font);
-  font-size: 2.5rem;
-  color: var(--accent-color);
-  margin-top: 0px; /* Stripped default browser margin */
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 0px #ffffff;
-  z-index: 10;
+.landing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
+.landing-title-split {
+  font-family: 'DungGeunMo', sans-serif;
+  font-size: 3.8rem;
+  margin: 0;
+  line-height: 1;
+  display: flex;
+  gap: 15px;
+  /* 밝은 회색 테두리 */
+  filter: 
+    drop-shadow(1px 0px 0px #ccc)
+    drop-shadow(-1px 0px 0px #ccc)
+    drop-shadow(0px 1px 0px #ccc)
+    drop-shadow(0px -1px 0px #ccc);
+}
+
+.landing-title-split .char {
+  background-image: radial-gradient(circle, #ffffff 25%, transparent 26%);
+  background-size: 5px 5px;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding: 2px;
+}
+
+.landing-title-split.top {
+  margin-bottom: -10px;
+  z-index: 3;
+}
+
+.landing-title-split.bottom {
+  margin-top: -10px;
+  z-index: 3;
+}
 
 .hero-poop {
-  width: 140px;
-  height: 140px;
-  image-rendering: pixelated; /* Retro blocky pixel art */
-  margin-bottom: -40px; /* User requested -40px to completely close the gap */
-  animation: float 3s ease-in-out infinite; /* Gentle continuous floating */
-  z-index: 10;
+  width: 260px; /* 대폭 확대 */
+  height: auto;
+  image-rendering: pixelated;
+  animation: landing-float 3s ease-in-out infinite;
+  z-index: 2;
 }
 
-@keyframes float {
-  0% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(-15px) scale(1.05); }
-  100% { transform: translateY(0px) scale(1); }
+@keyframes landing-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-25px); }
 }
