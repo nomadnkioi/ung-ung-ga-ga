@@ -112,23 +112,13 @@ const MonthlyReport = ({ records }) => {
                    fontSize: '3.5rem', 
                    fontWeight: '900', 
                    fontFamily: 'DungGeunMo',
-                   backgroundImage: 'radial-gradient(circle, #ffffff 30%, transparent 31%), radial-gradient(circle, #81d4fa 30%, #e1f5fe 31%)',
-                   backgroundSize: '6px 6px',
-                   backgroundPosition: '0 0, 3px 3px',
-                   WebkitBackgroundClip: 'text',
-                   WebkitTextFillColor: 'transparent',
-                   filter: `
-                      drop-shadow(1px 1px 0px #212121) 
-                      drop-shadow(-1px -1px 0px #212121)
-                      drop-shadow(1px -1px 0px #212121)
-                      drop-shadow(-1px 1px 0px #212121)
-                   `,
+                   color: '#888888',
                    lineHeight: '1.1',
                    display: 'inline-block',
                    padding: '10px'
                 }}>
                    {Math.round((records.filter(r => r.type === 'Healthy').length / (total || 1)) * 100)}
-                   <span style={{ fontSize: '1.2rem', WebkitTextFillColor: '#b3e5fc' }}>점</span>
+                   <span style={{ fontSize: '1.2rem' }}>점</span>
                 </div>
                 <p style={{ fontSize: '0.75rem', color: '#444', marginTop: '10px', lineHeight: '1.4', background: '#f5f5f5', padding: '8px', borderRadius: '4px', border: '1px solid #212121' }}>
                    {records.filter(r => r.type === 'Goat').length > 0 
