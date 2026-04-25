@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import healthy from '../assets/healthy_poop.png';
+import healthy from '../assets/healthy_poop.svg';
 import goat from '../assets/goat_poop.svg';
-import soft from '../assets/soft_poop.png';
-import diarrhea from '../assets/diarrhea_poop.png';
-import painful from '../assets/painful_poop.png';
+import soft from '../assets/soft_poop.svg';
+import diarrhea from '../assets/diarrhea_poop.svg';
+import painful from '../assets/painful_poop.svg';
 
 const RecordForm = ({ onSave, onCancel, date }) => {
   const [type, setType] = useState('Healthy');
