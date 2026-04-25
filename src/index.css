@@ -6,11 +6,13 @@
 }
 
 :root {
-  --primary-bg: #ffffff; /* Soft warm white */
-  --accent-color: #b3ace5; /* Soft Lavender */
-  --text-color: #4a4458; /* Dark muted purple-gray */
-  --card-bg: rgba(255, 255, 255, 0.9);
+  --primary-bg: #fffbf0; /* 웜톤 레트로 화이트 */
+  --accent-color: #ff6b6b; /* 강렬한 레트로 핑크/레드 */
+  --text-color: #212121; /* 진한 검정 (테두리용) */
+  --card-bg: #ffffff;
   --pixel-font: 'Press Start 2P', system-ui; /* Fallback to system ui if font not loaded */
+  --border-thick: 3px solid var(--text-color);
+  --shadow-thick: 4px 4px 0px var(--text-color);
 }
 
 * {
@@ -22,6 +24,10 @@
 body {
   font-family: 'Outfit', sans-serif;
   background-color: var(--primary-bg);
+  background-image: 
+    linear-gradient(#e2dfd5 1px, transparent 1px),
+    linear-gradient(90deg, #e2dfd5 1px, transparent 1px);
+  background-size: 20px 20px;
   color: var(--text-color);
   display: flex;
   justify-content: center;
@@ -48,17 +54,21 @@ h1 {
 
 button {
   cursor: pointer;
-  border: none;
-  border-radius: 12px;
+  border: var(--border-thick);
+  border-radius: 8px;
   padding: 10px 20px;
   background: var(--accent-color);
   color: white;
+  font-family: 'Galmuri11', sans-serif;
   font-weight: bold;
-  transition: transform 0.2s, background 0.2s;
+  box-shadow: var(--shadow-thick);
+  transform: translate(-2px, -2px);
+  transition: all 0.1s;
 }
 
 button:active {
-  transform: scale(0.95);
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px var(--text-color);
 }
 
 /* Animations */

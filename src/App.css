@@ -15,7 +15,9 @@
   background-color: var(--primary-bg);
   max-width: 500px; /* Force phone width on desktop */
   margin: 0 auto;
-  box-shadow: 0 0 40px rgba(0,0,0,0.08); /* Sophisticated shadow */
+  border-left: var(--border-thick);
+  border-right: var(--border-thick);
+  box-shadow: 0 0 40px rgba(0,0,0,0.1); 
 }
 
 .view-container {
@@ -34,8 +36,10 @@ header {
   align-items: center;
   background: var(--card-bg);
   padding: 10px 15px;
-  border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: var(--border-thick);
+  border-radius: 12px;
+  box-shadow: var(--shadow-thick);
+  margin-bottom: 5px;
 }
 
 .pixel-title {
@@ -47,20 +51,17 @@ header {
 }
 
 .nav-btn {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Galmuri11', sans-serif;
   font-weight: bold;
   font-size: 0.8rem;
   padding: 6px 12px;
-  background: #f3e5f5;
+  background: white;
   color: var(--text-color);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
 .nav-btn.accent {
-  background: var(--accent-color);
-  color: white;
+  background: #ffeb3b; /* bright yellow for accent button */
+  color: var(--text-color);
 }
 
 /* Records Summary */
@@ -80,9 +81,9 @@ header {
 .record-card {
   background: white;
   padding: 10px;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-  border-left: 5px solid var(--accent-color);
+  border-radius: 8px;
+  border: var(--border-thick);
+  box-shadow: 3px 3px 0px var(--text-color);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -108,9 +109,10 @@ header {
 /* Calendar */
 .calendar-grid {
   background: white;
-  border-radius: 20px;
+  border-radius: 12px;
   padding: 15px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-thick);
 }
 
 .calendar-header {
@@ -139,7 +141,7 @@ header {
 }
 
 .calendar-cell.today {
-  border: 2px dashed #ef9a9a;
+  border: 3px dashed var(--accent-color);
 }
 
 .day-number {
@@ -167,10 +169,10 @@ header {
 /* Monthly Report */
 .monthly-report-card {
   background: white;
-  border-radius: 24px; /* More rounded for premium feel */
+  border-radius: 12px; 
   padding: 24px;
-  box-shadow: 0 8px 24px rgba(179, 172, 229, 0.15); /* Soft lavender shadow */
-  border-top: 6px solid var(--accent-color);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-thick);
 }
 
 .monthly-report-card h3 {
@@ -182,12 +184,12 @@ header {
 }
 
 .chuimsae-box {
-  background: #fdfbff;
+  background: white;
   padding: 18px;
-  border-radius: 16px;
+  border-radius: 8px;
   text-align: center;
   margin-bottom: 24px;
-  border: 1.5px dashed #e1dff2;
+  border: 2px dashed var(--text-color);
 }
 
 .main-text {
@@ -207,9 +209,10 @@ header {
 }
 
 .line-chart-container {
-  background: #fbfaff;
+  background: white;
   padding: 20px 15px;
-  border-radius: 16px;
+  border-radius: 8px;
+  border: 2px solid var(--text-color);
   margin-top: 10px;
 }
 
@@ -231,17 +234,18 @@ header {
   flex-direction: column;
   align-items: center;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: white;
-  border: 2px solid transparent;
+  border: 2px solid var(--text-color);
+  box-shadow: 2px 2px 0px var(--text-color);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.1s;
 }
 
 .type-item.active {
-  border-color: var(--accent-color);
-  transform: scale(1.08);
-  box-shadow: 0 4px 12px rgba(179, 172, 229, 0.4);
+  background: #bbdefb; /* light blue */
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px var(--text-color);
 }
 
 .type-icon {
@@ -274,12 +278,13 @@ header {
   width: 100%;
   height: 100px;
   padding: 12px;
-  border-radius: 15px;
-  border: 1px solid #eee;
-  background: #fcfcfc;
+  border-radius: 8px;
+  border: var(--border-thick);
+  background: white;
   resize: none;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Galmuri11', sans-serif;
   font-size: 0.9rem;
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.05);
 }
 
 .memo-field textarea:focus {
@@ -290,22 +295,8 @@ header {
 
 .save-btn {
   width: 100%;
-  font-family: var(--pixel-font);
-  font-size: 0.85rem;
-  background: var(--accent-color);
-  color: white;
-  padding: 18px;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  box-shadow: 0 4px 10px rgba(179, 172, 229, 0.3);
 }
 
-.save-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 5px rgba(179, 172, 229, 0.2);
-}
 
 /* FallingPoop Home */
 .home-screen {
