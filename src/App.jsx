@@ -3,11 +3,12 @@ import './App.css';
 import FallingRain from './components/FallingRain';
 import CalendarView from './components/CalendarView';
 import RecordForm from './components/RecordForm';
+import DayDetailView from './components/DayDetailView';
 import MonthlyReport from './components/MonthlyReport';
 import { supabase } from './utils/supabaseClient';
 
 const App = () => {
-  const [view, setView] = useState('home'); // 'home', 'calendar', 'record'
+  const [view, setView] = useState('home'); // 'home', 'calendar', 'dayDetail', 'record'
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -66,7 +67,6 @@ const App = () => {
         setRecords(updatedRecords);
         localStorage.setItem('ung_ung_ga_ga_records', JSON.stringify(updatedRecords));
       }
-      setView('calendar');
     } catch (e) {
       alert("데이터 저장에 실패했습니다. (오프라인 모드 유지)");
       console.error("Save failed:", e);
@@ -75,7 +75,6 @@ const App = () => {
       const updatedRecords = [...records, offlineRecord];
       setRecords(updatedRecords);
       localStorage.setItem('ung_ung_ga_ga_records', JSON.stringify(updatedRecords));
-      setView('calendar');
     }
   };
 
@@ -96,7 +95,15 @@ const App = () => {
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
-    setView('record');
+    setView('dayDetail');
+  };
+
+  const getDayRecords = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const target = `${year}-${month}-${day}`;
+    return records.filter(r => r.date === target);
   };
 
   const handlePrevMonth = () => {
@@ -174,16 +181,34 @@ const App = () => {
         </div>
       )}
 
-      {view === 'record' && (
+      {view === 'dayDetail' && (
         <div className="view-container">
           <header>
             <button className="nav-btn" onClick={() => setView('calendar')}>돌아가기</button>
+            <h1 className="pixel-title">기록 상세</h1>
+          </header>
+          <DayDetailView 
+            date={selectedDate} 
+            records={getDayRecords(selectedDate)}
+            onAddRecord={() => setView('record')}
+            onBack={() => setView('calendar')}
+          />
+        </div>
+      )}
+
+      {view === 'record' && (
+        <div className="view-container">
+          <header>
+            <button className="nav-btn" onClick={() => setView('dayDetail')}>취소</button>
             <h1 className="pixel-title">응가 등록</h1>
           </header>
           <RecordForm 
             date={selectedDate} 
-            onSave={addRecord} 
-            onCancel={() => setView('calendar')} 
+            onSave={(newRecord) => {
+              addRecord(newRecord);
+              setView('dayDetail');
+            }} 
+            onCancel={() => setView('dayDetail')} 
           />
         </div>
       )}
