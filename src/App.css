@@ -1,11 +1,4 @@
 /* Global & Component Styles for UngUngGaGa */
-:root {
-  --primary-bg: #ffffff;
-  --accent-color: #b3ace5;
-  --text-color: #4a4458;
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --pixel-font: 'Press Start 2P', system-ui;
-}
 
 /* App Container */
 .app-container {
@@ -43,11 +36,16 @@ header {
 }
 
 .pixel-title {
-  font-family: var(--pixel-font);
-  font-size: 0.7rem;
-  color: var(--accent-color);
-  text-shadow: 1px 1px white;
+  font-family: 'DungGeunMo', sans-serif;
+  font-size: 1.1rem;
+  background: white;
+  color: var(--text-color);
+  padding: 4px 14px;
+  border: var(--border-thick);
+  box-shadow: 3px 3px 0px var(--text-color);
+  transform: rotate(-1.5deg); /* sticker vibe */
   margin: 0;
+  white-space: nowrap;
 }
 
 .nav-btn {
@@ -57,6 +55,17 @@ header {
   padding: 6px 12px;
   background: white;
   color: var(--text-color);
+}
+
+.nav-btn.home {
+  border: 2px dashed var(--text-color);
+  box-shadow: none;
+  transform: none;
+}
+
+.nav-btn.home:active {
+  background: #eee;
+  transform: scale(0.98);
 }
 
 .nav-btn.accent {
@@ -163,7 +172,7 @@ header {
 }
 
 .calendar-cell:hover {
-  background: #f3e5f5;
+  background: #e3f2fd; /* 연한 하늘색 오버레이 */
 }
 
 /* Monthly Report */

@@ -13,6 +13,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [editingRecord, setEditingRecord] = useState(null); // 수정 중인 기록 저장
   const [showAlarm, setShowAlarm] = useState(false);
 
   // 1. 초기 데이터 로드 (Supabase -> LocalStorage 백업 -> State)
@@ -51,31 +52,63 @@ const App = () => {
       type: newRecord.type,
       memo: newRecord.memo || '',
       date: typeof newRecord.date === 'string' ? newRecord.date.split('T')[0] : formatLocalDate(newRecord.date || new Date()),
-      // id는 Supabase가 자동 생성하도록 맡기거나 그대로 사용
     };
 
     try {
-      const { data, error } = await supabase
-        .from('records')
-        .insert([recordToSave])
-        .select();
+      if (editingRecord) {
+        // [수정 모드]
+        const { data, error } = await supabase
+          .from('records')
+          .update(recordToSave)
+          .eq('id', editingRecord.id)
+          .select();
 
-      if (error) throw error;
+        if (error) throw error;
+        if (data) {
+          const updatedRecords = records.map(r => r.id === editingRecord.id ? data[0] : r);
+          setRecords(updatedRecords);
+          localStorage.setItem('ung_ung_ga_ga_records', JSON.stringify(updatedRecords));
+          setEditingRecord(null);
+        }
+      } else {
+        // [새 기록 모드]
+        const { data, error } = await supabase
+          .from('records')
+          .insert([recordToSave])
+          .select();
 
-      if (data) {
-        const updatedRecords = [...records, data[0]];
-        setRecords(updatedRecords);
-        localStorage.setItem('ung_ung_ga_ga_records', JSON.stringify(updatedRecords));
+        if (error) throw error;
+        if (data) {
+          const updatedRecords = [...records, data[0]];
+          setRecords(updatedRecords);
+          localStorage.setItem('ung_ung_ga_ga_records', JSON.stringify(updatedRecords));
+          alert("새 응가가 등록되었습니다! 오늘도 건똥! 💩✨");
+        }
       }
     } catch (e) {
-      alert("데이터 저장에 실패했습니다. (오프라인 모드 유지)");
-      console.error("Save failed:", e);
-      // 오프라인 저장은 일단 로컬만 수행
-      const offlineRecord = { ...recordToSave, id: Date.now() };
-      const updatedRecords = [...records, offlineRecord];
+      console.error("Operation failed:", e);
+      alert("처리에 실패했습니다.");
+    }
+  };
+
+  const deleteRecord = async (id) => {
+    if (!window.confirm("정말 이 응가 기록을 삭제할까요? 💩🗑️")) return;
+    try {
+      const { error } = await supabase.from('records').delete().eq('id', id);
+      if (error) throw error;
+      const updatedRecords = records.filter(r => r.id !== id);
       setRecords(updatedRecords);
       localStorage.setItem('ung_ung_ga_ga_records', JSON.stringify(updatedRecords));
+      alert("삭제되었습니다.");
+    } catch (e) {
+      console.error("Delete failed:", e);
+      alert("삭제에 실패했습니다.");
     }
+  };
+
+  const startEditing = (record) => {
+    setEditingRecord(record);
+    setView('record');
   };
 
   //Emergency Alarm Simulation
@@ -147,9 +180,9 @@ const App = () => {
       {view === 'calendar' && (
         <div className="view-container">
           <header>
-            <button className="nav-btn" onClick={() => setView('home')}>HOME</button>
-            <h1 className="pixel-title">배변 캘린더</h1>
-            <button className="nav-btn accent" onClick={() => { setSelectedDate(new Date()); setView('record'); }}>기록</button>
+            <button className="nav-btn home" onClick={() => setView('home')}>HOME</button>
+            <h1 style={{fontSize: '1.8rem', margin: '0', cursor: 'default'}}>💩</h1>
+            <div style={{width: '60px'}}></div>
           </header>
           
           <CalendarView 
@@ -162,35 +195,22 @@ const App = () => {
 
           <MonthlyReport records={currentMonthRecords} />
 
-          <div className="records-summary">
-            <h3>최근 기록</h3>
-            {records.length === 0 ? (
-              <p className="no-records">아직 기록이 없어요! 💩</p>
-            ) : (
-              <div className="records-list">
-                {records.slice(-4).reverse().map(r => (
-                  <div key={r.id || r.created_at} className="record-card">
-                    <span className="record-date">{new Date(r.date).toLocaleDateString()}</span>
-                    <span className="record-type">{getPoopLabel(r.type)}</span>
-                    <p className="record-memo">{r.memo}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       )}
 
       {view === 'dayDetail' && (
         <div className="view-container">
           <header>
-            <button className="nav-btn" onClick={() => setView('calendar')}>돌아가기</button>
-            <h1 className="pixel-title">기록 상세</h1>
+            <button className="nav-btn home" onClick={() => setView('calendar')}>돌아가기</button>
+            <h1 style={{fontSize: '1.8rem', margin: '0', cursor: 'default'}}>💩</h1>
+            <div style={{width: '64px'}}></div>
           </header>
           <DayDetailView 
             date={selectedDate} 
             records={getDayRecords(selectedDate)}
-            onAddRecord={() => setView('record')}
+            onAddRecord={() => { setEditingRecord(null); setView('record'); }}
+            onEditRecord={startEditing}
+            onDeleteRecord={deleteRecord}
             onBack={() => setView('calendar')}
           />
         </div>
@@ -199,16 +219,18 @@ const App = () => {
       {view === 'record' && (
         <div className="view-container">
           <header>
-            <button className="nav-btn" onClick={() => setView('dayDetail')}>취소</button>
-            <h1 className="pixel-title">응가 등록</h1>
+            <button className="nav-btn home" onClick={() => { setEditingRecord(null); setView('dayDetail'); }}>취소</button>
+            <h1 style={{fontSize: '1.8rem', margin: '0', cursor: 'default'}}>💩</h1>
+            <div style={{width: '64px'}}></div>
           </header>
           <RecordForm 
             date={selectedDate} 
+            initialData={editingRecord}
             onSave={(newRecord) => {
               addRecord(newRecord);
               setView('dayDetail');
             }} 
-            onCancel={() => setView('dayDetail')} 
+            onCancel={() => { setEditingRecord(null); setView('dayDetail'); }} 
           />
         </div>
       )}

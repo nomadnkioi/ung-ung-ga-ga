@@ -5,7 +5,8 @@ const CalendarView = ({ records, onDateSelect, currentMonth = new Date(), onPrev
   const month = currentMonth.getMonth();
   
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const startDayOfWeek = new Date(year, month, 1).getDay(); // 0 is Sunday
+  const rawStartDay = new Date(year, month, 1).getDay(); // 0 is Sunday
+  const startDayOfWeek = (rawStartDay + 6) % 7; // Adjust to Monday start (0 is Monday)
   
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const emptyDays = Array.from({ length: startDayOfWeek }, (_, i) => i);
@@ -29,15 +30,24 @@ const CalendarView = ({ records, onDateSelect, currentMonth = new Date(), onPrev
   return (
     <div className="calendar-grid">
       <div className="calendar-nav" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-        <button onClick={onPrevMonth} style={{ background: 'none', border: 'none', fontSize: '1rem', color: 'var(--accent-color)', cursor: 'pointer', padding: '10px' }}>◀</button>
-        <div style={{ display: 'flex', alignItems: 'center', background: '#fdfbff', padding: '8px 25px', borderRadius: '30px', border: '1.5px dashed #e1dff2' }}>
-          <h2 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-color)', fontFamily: "'Outfit', sans-serif", fontWeight: '700' }}>{year}년 {month + 1}월</h2>
+        <span onClick={onPrevMonth} style={{ fontSize: '1.0rem', color: 'var(--text-color)', cursor: 'pointer', padding: '5px', userSelect: 'none' }}>◀</span>
+        <div style={{ display: 'flex', alignItems: 'center', background: '#e1f5fe', padding: '2px 8px', borderRadius: '8px', border: 'var(--border-thick)', boxShadow: '3px 3px 0px var(--text-color)' }}>
+          <h2 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-color)', fontFamily: "'DungGeunMo', sans-serif", fontWeight: '700', whiteSpace: 'nowrap' }}>{year}년 {month + 1}월</h2>
         </div>
-        <button onClick={onNextMonth} style={{ background: 'none', border: 'none', fontSize: '1rem', color: 'var(--accent-color)', cursor: 'pointer', padding: '10px' }}>▶</button>
+        <span onClick={onNextMonth} style={{ fontSize: '1.0rem', color: 'var(--text-color)', cursor: 'pointer', padding: '5px', userSelect: 'none' }}>▶</span>
       </div>
       <div className="calendar-header">
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-          <div key={`${d}-${i}`} className="calendar-day-name">{d}</div>
+        {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
+          <div 
+            key={`${d}-${i}`} 
+            className={`calendar-day-name ${i >= 5 ? 'weekend' : ''}`}
+            style={
+              i === 5 ? { color: '#888', fontWeight: 'bold' } : 
+              i === 6 ? { color: '#f44336', fontWeight: 'bold' } : {}
+            }
+          >
+            {d}
+          </div>
         ))}
       </div>
       <div className="calendar-body">

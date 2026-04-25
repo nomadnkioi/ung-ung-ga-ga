@@ -7,9 +7,8 @@
 
 :root {
   --primary-bg: #fffbf0; /* 웜톤 레트로 화이트 */
-  --accent-color: #ff6b6b; /* 강렬한 레트로 핑크/레드 */
-  --text-color: #212121; /* 진한 검정 (테두리용) */
-  --card-bg: #ffffff;
+  --accent-color: #002fa7; /* 쨍하고 깊은 인터내셔널 클라인 블루 */
+  --text-color: #212121; /* 진한 검정 (테두리용) */  --card-bg: #ffffff;
   --pixel-font: 'Press Start 2P', system-ui; /* Fallback to system ui if font not loaded */
   --border-thick: 3px solid var(--text-color);
   --shadow-thick: 4px 4px 0px var(--text-color);

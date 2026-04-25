@@ -25,13 +25,16 @@ const MonthlyReport = ({ records }) => {
       </div>
 
       <div className="chuimsae-box" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <p className="main-text" style={{ textAlign: 'center', whiteSpace: 'pre-line', lineHeight: '1.5', margin: '0 0 10px 0' }}>{text}</p>
-        <p className="sub-text" style={{ textAlign: 'center', margin: '0' }}>{subtext}</p>
+        <p className="main-text" style={{ textAlign: 'center', whiteSpace: 'pre-line', lineHeight: '1.5', margin: '0 0 10px 0', color: '#fbc02d', fontWeight: 'bold' }}>{text}</p>
+        <p className="sub-text" style={{ textAlign: 'center', margin: '0', fontSize: '0.8rem', color: '#888' }}>{subtext}</p>
       </div>
 
       {total > 0 && (
-        <div className="visualization-section">
-          <p className="summary-info">일별 배변 빈도 분석 (회/일)</p>
+        <div className="visualization-section" style={{ marginTop: '30px' }}>
+          <h2 className="report-title" style={{ fontSize: '1.0rem', margin: '0 0 15px 0', color: 'var(--text-color)', fontWeight: 'bold' }}>
+            <span style={{ fontSize: '1.1rem', marginRight: '5px' }}>📈</span>
+            일별 배변 빈도 추세
+          </h2>
           <div className="line-chart-container">
             <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="line-chart">
               {/* Y-Axis Grid Lines & Labels */}
@@ -47,59 +50,92 @@ const MonthlyReport = ({ records }) => {
                 );
               })}
               
-              {/* Trend Line */}
-              {points && (
-                <polyline
-                  fill="none"
-                  stroke="#b3ace5"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  points={points}
-                  className="pixel-line"
-                />
-              )}
+              <polyline
+                fill="none"
+                stroke="var(--accent-color)"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray="3 6"
+                points={points}
+              />
               
-              {/* Data Points & Value Labels */}
               {dailyFrequency.map((d, i) => {
                 const dayRatio = i / (dailyFrequency.length - 1 || 1);
                 const x = dayRatio * (chartWidth - 30) + 20;
                 const countRatio = d.count / (maxCount || 1);
                 const y = (chartHeight - 10) - countRatio * (chartHeight - 20);
-                
-                if (isNaN(x) || isNaN(y) || !isFinite(x) || !isFinite(y)) return null;
-                if (d.count === 0 && i % 5 !== 0) return null;
-                
-                return (
-                  <g key={`monthly-point-${i}`}>
-                    {d.count > 0 && (
-                      <React.Fragment key={`frag-${i}`}>
-                        <circle cx={x} cy={y} r="3" fill="#9575cd" />
-                        <text x={x} y={y - 6} fontSize="7" fill="#9575cd" fontWeight="bold" textAnchor="middle" fontFamily="DungGeunMo">
-                          {d.count}
-                        </text>
-                      </React.Fragment>
-                    )}
-                  </g>
-                );
+                if (isNaN(x) || isNaN(y) || !isFinite(x) || !isFinite(y) || d.count === 0) return null;
+                return <circle key={`p-${i}`} cx={x} cy={y} r="3" fill="#81d4fa" stroke="#212121" strokeWidth="0.5" />;
               })}
             </svg>
-            <div className="chart-labels" style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              width: '100%', 
-              paddingLeft: '30px', 
-              paddingRight: '20px', 
-              boxSizing: 'border-box',
-              marginTop: '5px',
-              fontSize: '0.55rem',
-              color: '#999',
-              fontFamily: "'Galmuri11', sans-serif"
-            }}>
-              <span>1일</span>
-              <span>15일</span>
-              <span>말일</span>
+            <div className="chart-labels" style={{ display: 'flex', justifyContent: 'space-between', padding: '0 20px 0 30px', fontSize: '0.6rem', color: '#999', fontFamily: 'DungGeunMo' }}>
+              <span>1일</span><span>15일</span><span>말일</span>
             </div>
+          </div>
+
+          <div className="quality-analysis-box" style={{ marginTop: '40px', padding: '20px', background: '#fff', border: 'var(--border-thick)', boxShadow: '4px 4px 0px var(--text-color)', borderRadius: '12px' }}>
+             <h2 className="report-title" style={{ fontSize: '1.0rem', margin: '0 0 20px 0', color: 'var(--text-color)', fontWeight: 'bold' }}>
+                <span style={{ fontSize: '1.1rem', marginRight: '5px' }}>🕹️</span>
+                이달의 응가 퀄리티 분석
+             </h2>
+             
+             {['Healthy', 'Goat', 'Soft', 'Diarrhea', 'Painful'].map(type => {
+               const count = records.filter(r => r.type === type).length;
+               const percentage = total > 0 ? (count / total) * 100 : 0;
+               const labels = { Healthy: '완벽(건강)', Goat: '딱딱(변비)', Soft: '묽음(부드럽)', Diarrhea: '설사(주의)', Painful: '복통(비상)' };
+               const colors = { Healthy: '#002fa7', Goat: '#8d6e63', Soft: '#fff176', Diarrhea: '#ff9800', Painful: '#f44336' };
+               
+               if (count === 0 && type !== 'Healthy' && type !== 'Goat') return null; // 빈 데이터는 일부 숨김
+
+               return (
+                 <div key={type} style={{ marginBottom: '15px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '6px', fontFamily: 'DungGeunMo' }}>
+                       <span style={{ fontWeight: 'bold' }}>{labels[type]}</span>
+                       <span>{count}회</span>
+                    </div>
+                    <div style={{ height: '14px', background: '#f0f0f0', border: '2px solid #212121', borderRadius: '4px', overflow: 'hidden' }}>
+                       <div style={{ 
+                          width: `${percentage}%`, 
+                          height: '100%', 
+                          background: colors[type],
+                          borderRight: percentage > 0 ? '2px solid #212121' : 'none'
+                       }}></div>
+                    </div>
+                 </div>
+               );
+             })}
+
+             <div className="wellness-summary" style={{ marginTop: '20px', paddingTop: '15px', borderTop: '2px dashed #eee', textAlign: 'center' }}>
+                <p style={{ margin: '0 0 8px 0', fontSize: '0.85rem', color: '#666' }}>🏆 건강 응가 점수</p>
+                <div style={{ 
+                   fontSize: '3.5rem', 
+                   fontWeight: '900', 
+                   fontFamily: 'DungGeunMo',
+                   backgroundImage: 'radial-gradient(circle, #ffffff 30%, transparent 31%), radial-gradient(circle, #81d4fa 30%, #e1f5fe 31%)',
+                   backgroundSize: '6px 6px',
+                   backgroundPosition: '0 0, 3px 3px',
+                   WebkitBackgroundClip: 'text',
+                   WebkitTextFillColor: 'transparent',
+                   filter: `
+                      drop-shadow(1px 1px 0px #212121) 
+                      drop-shadow(-1px -1px 0px #212121)
+                      drop-shadow(1px -1px 0px #212121)
+                      drop-shadow(-1px 1px 0px #212121)
+                   `,
+                   lineHeight: '1.1',
+                   display: 'inline-block',
+                   padding: '10px'
+                }}>
+                   {Math.round((records.filter(r => r.type === 'Healthy').length / (total || 1)) * 100)}
+                   <span style={{ fontSize: '1.2rem', WebkitTextFillColor: '#b3e5fc' }}>점</span>
+                </div>
+                <p style={{ fontSize: '0.75rem', color: '#444', marginTop: '10px', lineHeight: '1.4', background: '#f5f5f5', padding: '8px', borderRadius: '4px', border: '1px solid #212121' }}>
+                   {records.filter(r => r.type === 'Goat').length > 0 
+                     ? `⚠️ 주의! 이번 달은 토끼똥이 ${records.filter(r => r.type === 'Goat').length}번이나 있었어요. 식이섬유를 더 챙겨주세요!` 
+                     : "✨ 훌륭해요! 이번 달은 딱딱한 변이 없네요. 아주 좋은 컨디션입니다!"}
+                </p>
+             </div>
           </div>
         </div>
       )}

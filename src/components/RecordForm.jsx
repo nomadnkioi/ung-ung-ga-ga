@@ -5,9 +5,9 @@ import soft from '../assets/soft_poop.svg';
 import diarrhea from '../assets/diarrhea_poop.svg';
 import painful from '../assets/painful_poop.svg';
 
-const RecordForm = ({ onSave, onCancel, date }) => {
-  const [type, setType] = useState('Healthy');
-  const [memo, setMemo] = useState('');
+const RecordForm = ({ onSave, onCancel, date, initialData }) => {
+  const [type, setType] = useState(initialData ? initialData.type : 'Healthy');
+  const [memo, setMemo] = useState(initialData ? initialData.memo : '');
   const [showCelebration, setShowCelebration] = useState(false);
 
   const poopTypes = [
@@ -66,7 +66,7 @@ const RecordForm = ({ onSave, onCancel, date }) => {
 
   return (
     <div className="record-form">
-      <h3>기분 좋은 배변 기록</h3>
+      <h3>{initialData ? '응가 기록 수정하기' : '기분 좋은 배변 기록'}</h3>
       <div className="type-selector">
         {poopTypes.map(pt => (
           <div 
@@ -90,7 +90,9 @@ const RecordForm = ({ onSave, onCancel, date }) => {
       </div>
 
       <div className="actions">
-        <button className="save-btn" onClick={handleSave}>기록하기</button>
+        <button className="save-btn" onClick={handleSave}>
+          {initialData ? '수정 완료하기' : '기록하기'}
+        </button>
       </div>
 
     </div>

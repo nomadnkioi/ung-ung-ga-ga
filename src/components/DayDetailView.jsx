@@ -5,7 +5,7 @@ import soft from '../assets/soft_poop.svg';
 import diarrhea from '../assets/diarrhea_poop.svg';
 import painful from '../assets/painful_poop.svg';
 
-const DayDetailView = ({ date, records, onAddRecord, onBack }) => {
+const DayDetailView = ({ date, records, onAddRecord, onEditRecord, onDeleteRecord, onBack }) => {
   const [expandedRecordId, setExpandedRecordId] = useState(null);
 
   const getPoopIcon = (type) => {
@@ -40,32 +40,84 @@ const DayDetailView = ({ date, records, onAddRecord, onBack }) => {
       </div>
 
       <div className="detail-records-list">
-        {records.map((r) => (
-          <div 
-            key={r.id || r.created_at} 
-            className={`detail-record-card ${expandedRecordId === (r.id || r.created_at) ? 'expanded' : ''}`}
-            onClick={() => setExpandedRecordId(expandedRecordId === (r.id || r.created_at) ? null : (r.id || r.created_at))}
-          >
-            <div className="card-main">
-              <img src={getPoopIcon(r.type)} alt={r.type} className="card-icon" />
-              <div className="card-info">
-                <span className="card-type">{getPoopLabel(r.type)}</span>
-                <span className="card-time">{r.created_at ? new Date(r.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}</span>
+        {records.map((r, index) => {
+          const recordKey = r.id || `record-${index}-${r.created_at}`;
+          const isExpanded = expandedRecordId === recordKey;
+          
+          return (
+            <div 
+              key={recordKey} 
+              className={`detail-record-card ${isExpanded ? 'expanded' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setExpandedRecordId(isExpanded ? null : recordKey);
+              }}
+            >
+              <div className="card-main">
+                <img src={getPoopIcon(r.type)} alt={r.type} className="card-icon" />
+                <div className="card-info">
+                  <span className="card-type">{getPoopLabel(r.type)}</span>
+                  <span className="card-time">
+                    {r.created_at ? new Date(r.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}
+                  </span>
+                </div>
+                <div className="expand-indicator" style={{
+                  transition: 'transform 0.3s ease', 
+                  transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                  fontSize: '1.2rem'
+                }}>▼</div>
               </div>
-              <div className="expand-indicator">{expandedRecordId === (r.id || r.created_at) ? '▲' : '▼'}</div>
+              
+              <div className="card-memo-container" style={{
+                maxHeight: isExpanded ? '200px' : '0',
+                opacity: isExpanded ? 1 : 0,
+                overflow: 'hidden',
+                transition: 'all 0.3s ease'
+              }}>
+                <div className="card-memo" style={{ borderTop: isExpanded ? '2px dashed #f0f0f0' : 'none', marginTop: isExpanded ? '12px' : '0' }}>
+                  {r.memo || <span className="no-memo">메모가 없습니다.</span>}
+                  
+                  {isExpanded && (
+                    <div className="card-actions" style={{ 
+                      display: 'flex', 
+                      justifyContent: 'flex-end', 
+                      gap: '12px', 
+                      marginTop: '15px' 
+                    }}>
+                      <span 
+                        onClick={(e) => { e.stopPropagation(); onEditRecord(r); }}
+                        style={{ fontSize: '0.75rem', color: '#888', cursor: 'pointer', textDecoration: 'underline' }}
+                      >수정</span>
+                      <span 
+                        onClick={(e) => { e.stopPropagation(); onDeleteRecord(r.id); }}
+                        style={{ fontSize: '0.75rem', color: '#ff5252', cursor: 'pointer', textDecoration: 'underline' }}
+                      >삭제</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {!isExpanded && r.memo && (
+                <div className="card-memo-preview" style={{
+                  marginTop: '10px', 
+                  fontSize: '0.85rem', 
+                  color: '#999',
+                  borderTop: '1px solid #f9f9f9',
+                  paddingTop: '8px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}>
+                  {r.memo.length > 25 ? (
+                    <>{r.memo.substring(0, 25)}<span style={{fontSize: '0.75rem', color: '#ccc'}}> ...(더보기)</span></>
+                  ) : (
+                    r.memo
+                  )}
+                </div>
+              )}
             </div>
-            {(expandedRecordId === (r.id || r.created_at) || r.memo.length < 30) && (
-              <div className="card-memo">
-                {r.memo || <span className="no-memo">메모가 없습니다.</span>}
-              </div>
-            )}
-            {expandedRecordId !== (r.id || r.created_at) && r.memo.length >= 30 && (
-              <div className="card-memo-preview">
-                {r.memo.substring(0, 30)}...
-              </div>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <button className="add-more-btn" onClick={onAddRecord}>
@@ -102,15 +154,16 @@ const DayDetailView = ({ date, records, onAddRecord, onBack }) => {
         }
         .detail-record-card {
           background: white;
-          border-radius: 16px;
+          border-radius: 8px;
           padding: 15px;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-          border: 1px solid #f0f0f0;
+          border: var(--border-thick);
+          box-shadow: 3px 3px 0px var(--text-color);
           cursor: pointer;
-          transition: transform 0.2s;
+          transition: transform 0.1s;
         }
         .detail-record-card:active {
-          transform: scale(0.98);
+          transform: translate(2px, 2px);
+          box-shadow: 0px 0px 0px var(--text-color);
         }
         .card-main {
           display: flex;
@@ -145,7 +198,7 @@ const DayDetailView = ({ date, records, onAddRecord, onBack }) => {
           color: #555;
           line-height: 1.5;
           padding-top: 12px;
-          border-top: 1px dashed #eee;
+          border-top: 2px dashed #eee;
           white-space: pre-wrap;
         }
         .no-memo {
@@ -155,16 +208,23 @@ const DayDetailView = ({ date, records, onAddRecord, onBack }) => {
         .add-more-btn {
           background: var(--accent-color);
           color: white;
-          border: none;
-          border-radius: 12px;
+          border: var(--border-thick);
+          border-radius: 8px;
           padding: 15px;
+          font-family: 'Galmuri11', sans-serif;
           font-weight: 700;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 10px;
-          box-shadow: 0 4px 10px rgba(130, 115, 235, 0.3);
+          box-shadow: var(--shadow-thick);
+          transform: translate(-2px, -2px);
+          transition: all 0.1s;
+        }
+        .add-more-btn:active {
+          transform: translate(2px, 2px);
+          box-shadow: 0px 0px 0px var(--text-color);
         }
         .add-more-btn span {
           font-size: 1.2rem;
