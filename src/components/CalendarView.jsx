@@ -29,12 +29,56 @@ const CalendarView = ({ records, onDateSelect, currentMonth = new Date(), onPrev
 
   return (
     <div className="calendar-grid">
-      <div className="calendar-nav" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
-        <span onClick={onPrevMonth} style={{ fontSize: '1.2rem', color: 'var(--text-color)', cursor: 'pointer', padding: '5px', userSelect: 'none', fontFamily: "'DungGeunMo', sans-serif", fontWeight: 'bold', WebkitTextStroke: '1.5px var(--text-color)' }}>{'<'}</span>
-        <div style={{ display: 'flex', alignItems: 'center', background: '#e1f5fe', padding: '2px 8px', borderRadius: '8px', border: 'var(--border-thick)', boxShadow: '3px 3px 0px var(--text-color)' }}>
-          <h2 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-color)', fontFamily: "'DungGeunMo', sans-serif", fontWeight: '700', whiteSpace: 'nowrap' }}>{year}년 {month + 1}월</h2>
+      <div className="calendar-nav" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px', marginBottom: '20px' }}>
+        <button 
+          onClick={onPrevMonth} 
+          style={{ 
+            background: 'none', 
+            border: 'none', 
+            boxShadow: 'none', 
+            padding: '8px', 
+            cursor: 'pointer', 
+            color: '#8E8A9A', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            transition: 'color 0.2s',
+            transform: 'none'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-color)'}
+          onMouseOut={(e) => e.currentTarget.style.color = '#8E8A9A'}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <h2 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-color)', fontFamily: "'Outfit', 'Galmuri11', sans-serif", fontWeight: '700', letterSpacing: '-0.5px' }}>
+            {year}년 {month + 1}월
+          </h2>
         </div>
-        <span onClick={onNextMonth} style={{ fontSize: '1.2rem', color: 'var(--text-color)', cursor: 'pointer', padding: '5px', userSelect: 'none', fontFamily: "'DungGeunMo', sans-serif", fontWeight: 'bold', WebkitTextStroke: '1.5px var(--text-color)' }}>{'>'}</span>
+        <button 
+          onClick={onNextMonth} 
+          style={{ 
+            background: 'none', 
+            border: 'none', 
+            boxShadow: 'none', 
+            padding: '8px', 
+            cursor: 'pointer', 
+            color: '#8E8A9A', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            transition: 'color 0.2s',
+            transform: 'none'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-color)'}
+          onMouseOut={(e) => e.currentTarget.style.color = '#8E8A9A'}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
       </div>
       <div className="calendar-header">
         {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (

@@ -142,7 +142,7 @@ const DayDetailView = ({ date, records, onAddRecord, onEditRecord, onDeleteRecor
         }
         .detail-subtitle {
           font-size: 0.9rem;
-          color: #888;
+          color: #8E8A9A;
         }
         .detail-records-list {
           display: flex;
@@ -154,16 +154,15 @@ const DayDetailView = ({ date, records, onAddRecord, onEditRecord, onDeleteRecor
         }
         .detail-record-card {
           background: white;
-          border-radius: 8px;
+          border-radius: 16px;
           padding: 15px;
           border: var(--border-thick);
-          box-shadow: 3px 3px 0px var(--text-color);
+          box-shadow: var(--shadow-thick);
           cursor: pointer;
-          transition: transform 0.1s;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .detail-record-card:active {
-          transform: translate(2px, 2px);
-          box-shadow: 0px 0px 0px var(--text-color);
+          transform: scale(0.98);
         }
         .card-main {
           display: flex;
@@ -173,7 +172,6 @@ const DayDetailView = ({ date, records, onAddRecord, onEditRecord, onDeleteRecor
         .card-icon {
           width: 40px;
           height: 40px;
-          image-rendering: pixelated;
         }
         .card-info {
           flex: 1;
@@ -186,30 +184,30 @@ const DayDetailView = ({ date, records, onAddRecord, onEditRecord, onDeleteRecor
         }
         .card-time {
           font-size: 0.8rem;
-          color: #aaa;
+          color: #B5B2BD;
         }
         .expand-indicator {
           font-size: 0.8rem;
-          color: #ccc;
+          color: #C5C2CD;
         }
         .card-memo, .card-memo-preview {
           margin-top: 12px;
           font-size: 0.95rem;
-          color: #555;
+          color: #5C5865;
           line-height: 1.5;
           padding-top: 12px;
-          border-top: 2px dashed #eee;
+          border-top: 1.5px dashed #F0EDF7;
           white-space: pre-wrap;
         }
         .no-memo {
-          color: #ccc;
+          color: #C5C2CD;
           font-style: italic;
         }
         .add-more-btn {
           background: var(--accent-color);
           color: white;
-          border: var(--border-thick);
-          border-radius: 8px;
+          border: none;
+          border-radius: 14px;
           padding: 15px;
           font-family: 'Galmuri11', sans-serif;
           font-weight: 700;
@@ -218,13 +216,12 @@ const DayDetailView = ({ date, records, onAddRecord, onEditRecord, onDeleteRecor
           align-items: center;
           justify-content: center;
           gap: 10px;
-          box-shadow: var(--shadow-thick);
-          transform: translate(-2px, -2px);
-          transition: all 0.1s;
+          box-shadow: 0 4px 12px rgba(167, 149, 232, 0.3);
+          transition: all 0.2s ease;
         }
         .add-more-btn:active {
-          transform: translate(2px, 2px);
-          box-shadow: 0px 0px 0px var(--text-color);
+          transform: scale(0.96);
+          box-shadow: 0 2px 6px rgba(167, 149, 232, 0.2);
         }
         .add-more-btn span {
           font-size: 1.2rem;
